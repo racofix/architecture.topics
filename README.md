@@ -20,7 +20,7 @@ Kotlin + MVVM + Clean Architecture + Coroutines + Flow
 
 
 ## synthetic
-省略 findViewById ..
+findViewById .
 ```
 build.gradle (:app)
 apply plugin: 'kotlin-android-extensions'
