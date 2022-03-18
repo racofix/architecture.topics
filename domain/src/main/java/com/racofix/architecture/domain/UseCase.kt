@@ -1,12 +1,9 @@
-package com.racofix.architecture.topics.platform
+package com.racofix.architecture.domain
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 
-abstract class UseCase<Type, in Params> {
+abstract class UseCase<in Params, Type> {
 
     abstract suspend fun execute(params: Params): Flow<Result<Type>>
 
@@ -15,6 +12,7 @@ abstract class UseCase<Type, in Params> {
     ): Flow<Result<Type>> =
         execute(params)
             .onStart { emit(Result.Loading) }
-            .catch { emit(Result.Failure(it)) }
+            .catch { emit(Result.Error(it)) }
+            .onCompletion { emit(Result.Idle) }
             .flowOn(Dispatchers.IO)
 }

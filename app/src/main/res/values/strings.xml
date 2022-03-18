@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">architecture-topics</string>
+    <string name="app_name">architecture.topics</string>
+    <string name="input_charID">insert character ID</string>
+    <string name="btn_search_remote">Search remote</string>
+    <string name="no_character">NO CHARACTER</string>
+    <string name="btn_search_local">Search local</string>
 </resources>
