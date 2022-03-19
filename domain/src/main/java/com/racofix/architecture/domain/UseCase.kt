@@ -5,12 +5,12 @@ import kotlinx.coroutines.flow.*
 
 abstract class UseCase<in Params, Type> {
 
-    abstract suspend fun execute(params: Params): Flow<Result<Type>>
+    abstract fun flowOf(params: Params): Flow<Result<Type>>
 
-    suspend operator fun invoke(
+    operator fun invoke(
         params: Params
     ): Flow<Result<Type>> =
-        execute(params)
+        flowOf(params)
             .onStart { emit(Result.Loading) }
             .catch { emit(Result.Error(it)) }
             .onCompletion { emit(Result.Idle) }

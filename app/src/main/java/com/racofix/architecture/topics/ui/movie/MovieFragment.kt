@@ -7,9 +7,11 @@ import androidx.lifecycle.lifecycleScope
 import com.racofix.architecture.domain.Result
 import com.racofix.architecture.topics.R
 import com.racofix.architecture.topics.platform.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.flow.collect
 
+@AndroidEntryPoint
 class MovieFragment : BaseFragment() {
 
     lateinit var viewModel: MovieViewModel
@@ -22,20 +24,9 @@ class MovieFragment : BaseFragment() {
     }
 
     private fun subscribeTo() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.getMoveDetails1().collect {
-                when (it) {
-                    is Result.Idle -> hideProgress()
-                    is Result.Loading -> showProgress()
-                    is Result.Success -> it.data?.let { value -> textViewDetails.text = value.id }
-                    is Result.Error -> it.exception.message?.let { msg -> showMessage(msg) }
-                }
-            }
-        }
-
         /*
           2 - 4 全部采用此方式,
-          优点：全部采用 自定义协程，根据ViewModel 生命周期绑定
+          优点：自定义协程，生命周期和 ViewModel 绑定
           flow 冷流 StateFlow 热流
          */
         viewModel.getMoveDetails4 {
