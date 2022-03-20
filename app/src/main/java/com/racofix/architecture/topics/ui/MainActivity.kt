@@ -1,14 +1,21 @@
 package com.racofix.architecture.topics.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.racofix.architecture.topics.R
+import com.racofix.architecture.topics.platform.BaseActivity
+import com.racofix.architecture.topics.ui.movie.MovieFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
+
+    override fun getLayoutId(): Int = R.layout.activity_main
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, MovieFragment())
+            .commit()
     }
 }

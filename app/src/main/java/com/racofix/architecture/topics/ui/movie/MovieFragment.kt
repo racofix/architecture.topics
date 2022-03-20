@@ -3,20 +3,19 @@ package com.racofix.architecture.topics.ui.movie
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import com.racofix.architecture.domain.Result
 import com.racofix.architecture.topics.R
 import com.racofix.architecture.topics.platform.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.flow.collect
+import kotlinx.android.synthetic.main.fragment_main.*
 
 @AndroidEntryPoint
 class MovieFragment : BaseFragment() {
 
-    lateinit var viewModel: MovieViewModel
+    private val viewModel by viewModels<MovieViewModel>()
 
-    override fun layoutId(): Int = R.layout.activity_main
+    override fun getLayoutId(): Int = R.layout.fragment_main
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -24,12 +23,20 @@ class MovieFragment : BaseFragment() {
     }
 
     private fun subscribeTo() {
+        viewModel.getMoveDetails1 {
+            when (this) {
+                is Result.Idle -> hideProgress()
+                is Result.Loading -> showProgress()
+                is Result.Success -> data?.let { value -> textViewDetails.text = value.id }
+                is Result.Error -> exception.message?.let { msg -> showMessage(msg) }
+            }
+        }
         /*
-          2 - 4 全部采用此方式,
-          优点：自定义协程，生命周期和 ViewModel 绑定
-          flow 冷流 StateFlow 热流
+          优点：
+              自定义协程，
+              生命周期和 ViewModel 绑定
          */
-        viewModel.getMoveDetails4 {
+        viewModel.getMoveDetails2 {
             when (this) {
                 is Result.Idle -> hideProgress()
                 is Result.Loading -> showProgress()
