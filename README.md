@@ -1,5 +1,5 @@
 # Architecture topics <mvvm-clean>
-Kotlin + Coroutines + Flow + mvvm-clean
+Kotlin + MVVM + Clean Architecture + Coroutines
 
 
 ## Synthetic
